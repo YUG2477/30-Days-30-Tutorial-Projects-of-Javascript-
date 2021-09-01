@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Speech Detection</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <h2>Speech Detection 🎤</h2>
+    <h3>By :- YUGAL PATIDAR</h3>
+    <div class="words" contenteditable>
+    </div>
+
+
+    <script>
+        window.SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        const recognition = new SpeechRecognition();
+        //  interimResults true means we stop  speaking it will terminate 
+        recognition.interimResults = true;
+
+
+        let p = document.createElement('p');
+        const words = document.querySelector('.words');
+        words.appendChild(p);
+
+        recognition.addEventListener('result', e => {
+            console.log(e.results);
+            // here results is data-set which we will get inside SpeechRecognition
+            const transcript = Array.from(e.results)
+                .map(result => result[0])
+                .map(result => result.transcript)
+                .join('');
+
+                // print textcontent in p 
+                p.textContent=transcript;
+
+
+                // here last para will stay store there as paragraph and then add new para in next line
+            if (e.results[0].isFinal) {
+                p = document.createElement('p');
+                words.appendChild(p);
+            }
+
+        });
+// restartt the speech recognition  after stoping
+        recognition.addEventListener('end', recognition.start);
+        recognition.start();
+
+    </script>
+
+</body>
+
+</html>

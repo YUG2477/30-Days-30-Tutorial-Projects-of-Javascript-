@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fun with HTMl5 Canvas</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <canvas id="draw" width="600" height="600"></canvas>
+
+    <script>
+    const canvas = document.querySelector('#draw');
+    const ctx = canvas.getContext('2d');
+    //  to  get size of canvas with respect to window screen
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    ctx.strokeStyle = '#BADA55'; // strokeStyle is color of mark
+    ctx.lineCap = 'round'; //defining the shape to be used at the end of open subpaths when they are stroked.
+    ctx.lineJoin = 'round';  //linejoin attribute is a  defining the shape to be used at the corners of paths when they are stroked.
+    ctx.lineWidth = 20; // width of the stroke or cursor 
+
+    //  drawing is off when we click the mouse then drawing event turn true
+    let isDrawing = false;
+// we need a start and end co-ordinate to draw any line or anything
+    let LastX = 0;
+    let LastY = 0;
+    //  for color change
+    let hue = 0 ;
+    //  direction for change in size and color 
+    let direction = true;
+
+    function draw(e){
+        if(!isDrawing) return; // stop the function running when they are not moused down
+        console.log(e);
+        
+        // drawing start
+        ctx.beginPath();
+        // start from 
+        ctx.moveTo(LastX, LastY);
+        // go to 
+        ctx.lineTo(e.offsetX, e.offsetY);   //offsetX ,offsetY from console for event calls
+        ctx.stroke();
+        
+        [LastX, LastY] = [e.offsetX, e.offsetY ];
+
+        
+        // 100% saturation and 50%lightness = color change of path
+        ctx.strokeStyle = `hsl(${hue}, 100% , 50%)`;
+        hue++;
+        if(hue>=360){
+            hue = 0 ;
+        }
+        //  when we want to  change line width wrt color width between 1 to 100 then back to 1
+                if (ctx.lineWidth >= 100 || ctx.lineWidth <= 1) {
+               direction = !direction;
+                  }
+        
+                  if(direction) {
+                 ctx.lineWidth++;
+                  } else {
+                   ctx.lineWidth--;
+                   }
+        
+        
+        
+    }
+    canvas.addEventListener('mousedown' , (e)=> {
+        isDrawing = true;
+        // its help us to start draw fro where we click instead of origin
+        [LastX, LastY] = [e.offsetX, e.offsetY ];
+    });
+
+    canvas.addEventListener('mousemove' , draw);
+    canvas.addEventListener('mouseup' , ()=> isDrawing = false);
+    canvas.addEventListener('mouseout' , ()=> isDrawing = false);
+
+    
+
+    </script>
+
+    
+</body>
+</html>

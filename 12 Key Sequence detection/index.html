@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Key Sequence  Detection</title>
+    
+    <script type="text/javascript" src="https://www.cornify.com/js/cornify.js"></script>
+</head>
+<body>
+    <script>
+        const pressed = []; // key pressed store in this array
+        const secretCode = 'yugal';//  yugal here we want to search
+        
+        window.addEventListener('keyup', (e) => {
+          console.log(e.key);
+          pressed.push(e.key);
+          // minus secretcode bcz we want ot search the secretcode in reverse order
+          pressed.splice(-secretCode.length - 1, pressed.length - secretCode.length);
+          //if secret code match if we file the file of js names cornify_add;
+          if (pressed.join('').includes(secretCode)) {
+            console.log('DING DING!');
+            cornify_add();
+          }
+          console.log(pressed);
+        });
+        </script>
+</body>
+</html>
